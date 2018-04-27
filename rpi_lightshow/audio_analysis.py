@@ -38,8 +38,8 @@ def make_frequency_bin(frequencies, bin_width, low_freq, high_freq):
         A number representing the magnitude of the new frequency bin.
     """
     # Find the indices for the lowest and highest bins to include
-    low_bin_idx = int(np.ceil(low_freq / width))
-    high_bin_idx = int(np.floor(high_freq / width))
+    low_bin_idx = int(np.ceil(low_freq / bin_width))
+    high_bin_idx = int(np.floor(high_freq / bin_width))
 
     # Find the number of bins used
     num_bins = high_bin_idx - low_bin_idx + 1
