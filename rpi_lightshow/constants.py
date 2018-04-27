@@ -26,3 +26,7 @@ FREQUENCY_BINS = ((60, 150),    # bass (consider going further than 150)
                   (4e3, 6e3),   # "presence"
                   (6e3, 20e3),  # "brilliance"
                  )
+
+# Raspberry Pi GPIO pins to use. The order here matters, and for now
+# there must be exactly 6 pins. More on this later.
+GPIO_PINS = (12, 18, 22, 36, 38, 40)
