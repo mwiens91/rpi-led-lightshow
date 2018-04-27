@@ -12,9 +12,9 @@ def apply_window(data):
     http://download.ni.com/evaluation/pxi/Understanding%20FFTs%20and%20Windowing.pdf.
 
     Arg:
-        data: A numpy.array of numbers.
+        data: A numpy.array of numbers representing audio data.
     Returns:
-        The same array with a Hanning window applied.
+        The `data` array with a Hanning window applied.
     """
     return data * np.hanning(len(data))
 
