@@ -2,6 +2,7 @@
 
 import audioop
 import numpy as np
+from rpi_lightshow.constants import RATE, FREQUENCY_BINS
 
 
 def apply_window(data):
@@ -46,3 +47,38 @@ def make_frequency_bin(frequencies, bin_width, low_freq, high_freq):
 
     # Return the magnitude of the new bin
     return sum(frequencies[low_bin_idx:high_bin_idx + 1] / num_bins)
+
+def fill_frequency_bins(audio_data,
+                        sample_rate=RATE,
+                        target_frequency_bins=FREQUENCY_BINS):
+    """Returns magnitudes of target frequency ranges from an audio sample.
+
+    Args:
+        audio_data: A numpy.array of numbers representing audio data.
+        sample_rate: Sampling rate of audio data in Hz.
+        targest_frequency_bins: A list or tuple of two-tuples containing
+            the lowest and highest frequencies to be included in a
+            frequency bin.
+    Returns:
+        A list of numbers containing the magnitudes of each target
+        frequency range, scaled by the number of frequencies included in
+        each range.
+    """
+    # Frequency width for each bin the FFT will give us
+    fft_width = sample_rate / len(audio_data)
+
+    # Apply a Hanning window to the audio data
+    windowed_data = apply_window(audio_data)
+
+    # Perform an FFT and take the magnitude of each resulting complex
+    # number
+    fft_frequencies = np.abs(np.fft.rfft(windowed_data))
+
+    # Build the target bins
+    target_frequency_bins = [make_frequency_bin(fft_frequencies,
+                                                fft_width,
+                                                target_frequency_bins[i][0],
+                                                target_frequency_bins[i][1],)
+                                for i in range(len(target_frequency_bins))]
+
+    return target_frequency_bins
