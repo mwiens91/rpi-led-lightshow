@@ -1,7 +1,9 @@
 """Main program for the light show."""
 
+import numpy as np
 import pyaudio
 import RPi.GPIO as GPIO
+from rpi_lightshow.audio_analysis import fill_frequency_bins
 from rpi_lightshow.constants import (FRAMES_PER_BUFFER,
                                      FORMAT,
                                      CHANNELS,
@@ -10,7 +12,12 @@ from rpi_lightshow.constants import (FRAMES_PER_BUFFER,
 
 def pyaudio_stream_callback(raw_audio_string, *_):
     """Callback function for PyAudio stream."""
-    pass
+    # Put the audio data into an array
+    data_array = np.fromstring(raw_audio_string, np.int16)
+
+    # Find the frequency levels
+    levels = fill_frequency_bins(data_array)
+    print(levels)
 
 def main():
     """The main function for the light show."""
