@@ -1,6 +1,5 @@
 """Contains functions to analyze audio."""
 
-import audioop
 import numpy as np
 from rpi_lightshow.constants import RATE, FREQUENCY_BINS
 
