@@ -54,7 +54,7 @@ def pyaudio_stream_callback_closure(pulse_width_modulators):
         # Scale the frequency levels by their maximum to determine duty
         # cycles
         duty_cycles = [level / max_freq_level * 100
-                    for level, max_freq_level in zip(max_freq_levels, levels)]
+                    for level, max_freq_level in zip(levels, max_freq_levels)]
 
         # Pulse each corresponding LED with its frequency bin level
         for pwm, duty_cycle in zip(pulse_width_modulators, duty_cycles):
