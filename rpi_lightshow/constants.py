@@ -32,6 +32,12 @@ RATE = 44100                # sampling rate in Hz
 # now), and their upper limit must never exceed half of the sampling
 # rate (e.g., for sampling rate of 44.1KHz, the upper limists must be
 # less than 22KHz).
+#
+# The frequency bins work as follows: it will recombine frequency bins
+# returned by a Fast Fourier Transform (FFT) such that all of the bins
+# it combines are greater than the lowest frequency and lower than the
+# highest frequency. Thus, selecting too narrow a width can lead to not
+# combining any of the FFTs bins, causing the program to crash.
 FREQUENCY_BINS = ((60, 150),    # bass (consider going further than 150)
                   (250, 500),   # low midrange
                   (500, 2e3),   # midrange
