@@ -20,7 +20,18 @@ def limit_level(max_freq, level):
         return 100
 
 def pyaudio_stream_callback(raw_audio_string, *_):
-    """Callback function for PyAudio stream."""
+    """Callback function for PyAudio stream.
+
+    Takes in a string encoding audio for each buffer, and lights up LEDs
+    according to the audio buffer.
+
+    Arg:
+        raw_audio_string: A bytes string encoding an audio buffer using
+            the format specified in FORMAT.
+    Returns:
+        The exact raw_audio_string passed into the function, and a
+        signal to tell PyAudio to keep running.
+    """
 
     # Put the audio data into an array
     data_array = np.fromstring(raw_audio_string,
