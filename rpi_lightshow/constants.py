@@ -3,6 +3,11 @@
 # Audio stream settings (see
 # https://people.csail.mit.edu/hubert/pyaudio/docs/ for more details on
 # any of these)
+
+# This should be a power of 2, and is the best number to tweak in terms
+# of performance, as increasing/decreasing this value by a factor of two
+# will double/half the number of times a Fast Fourier Transform is
+# computed (expensive!).
 FRAMES_PER_BUFFER = 2048    # number of audio frames per buffer
 
 # Choose between the following:
