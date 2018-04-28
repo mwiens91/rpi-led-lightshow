@@ -1,7 +1,8 @@
 """Contains functions to analyze audio."""
 
+import audioop
 import numpy as np
-from rpi_lightshow.constants import RATE, FREQUENCY_BINS
+from rpi_lightshow.constants import FORMAT, RATE, FREQUENCY_BINS
 
 
 def apply_window(data):
@@ -81,3 +82,25 @@ def fill_frequency_bins(audio_data,
                                 for i in range(len(target_frequency_bins))]
 
     return target_frequency_bins
+
+def find_volume(audio_bytes_string, format_=FORMAT):
+    """Returns the RMS of an audio sample.
+
+    Arg:
+        audio_bytes_string: A bytes string of audio encoded with int8,
+            int16, or int32. No other formats will work with this.
+        format_: A string signifying the format used to encode the audio.
+    Returns:
+        A number corresponding to the RMS of the audio string.
+    """
+    # Find how many bytes are being used to encode each sample of audio
+    if format_ == 'int8':
+        width = 1
+    elif format_ == 'int16':
+        width = 2
+    elif format_ == 'int32':
+        width = 4
+    else:
+        raise ValueError("'%s' is an invalid format here!" % format_)
+
+    return audioop.rms(audio_bytes_string, width)
