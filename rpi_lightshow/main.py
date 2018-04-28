@@ -31,7 +31,13 @@ def pyaudio_stream_callback(raw_audio_string, *_):
     global max_freqs
     max_freqs = [(max(levels, max_freqs)) for max_freqs, levels in zip(max_freqs,levels)]
 
-    level = [(limit_level(levels,max_freqs)) for levels, max_freqs in zip(max_freqs,levels)]
+    # Limit the level of the frequency
+    levels = [(limit_level(levels,max_freqs)) for levels, max_freqs in zip(max_freqs,levels)]
+
+    # Pulse the corresponding LED with the corresponding frequency bin
+    for pwm, level in zip(pwms,levels):
+        pwm.ChangeDutyCycle(level)
+
     print(levels)
 
     return(raw_audio_string, pyaudio.paContinue)
