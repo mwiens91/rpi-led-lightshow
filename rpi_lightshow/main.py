@@ -47,15 +47,6 @@ def main():
     # Start PyAudio
     this_pyaudio = pyaudio.PyAudio()
 
-    # Use the RPi's audio output
-    audio_stream = this_pyaudio.open(format=FORMAT,
-                                     channels=CHANNELS,
-                                     rate=RATE,
-                                     frames_per_buffer=FRAMES_PER_BUFFER,
-                                     stream_callback=pyaudio_stream_callback,
-                                     input=True,
-                                     output=False)
-
     # Set up the GPIO pins
     GPIO.setmode(GPIO.BOARD)    # refer to pin numbers on RPi board
     pwms = []
@@ -70,6 +61,15 @@ def main():
 
         # Add to list of pwms
         pwms.append(pwm)
+
+    # Use the RPi's audio output
+    audio_stream = this_pyaudio.open(format=FORMAT,
+                                     channels=CHANNELS,
+                                     rate=RATE,
+                                     frames_per_buffer=FRAMES_PER_BUFFER,
+                                     stream_callback=pyaudio_stream_callback,
+                                     input=True,
+                                     output=False)
 
     # Now we're in normal running operation. Exit when user tells us to.
     input("\n" + "-" * 5 + " hit enter anytime to exit " + "-" * 5 + "\n")
