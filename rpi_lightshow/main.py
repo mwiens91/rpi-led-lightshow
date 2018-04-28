@@ -87,7 +87,7 @@ def main():
         pwm = GPIO.PWM(pin_number, 100)   # 2nd arg is frequency
         pwm.start(0)
 
-        # Add to list of pwms
+        # Add to list of PWMs
         pwms.append(pwm)
 
     # Use the RPi's audio output
