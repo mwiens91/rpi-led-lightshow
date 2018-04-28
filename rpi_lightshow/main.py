@@ -19,6 +19,8 @@ def pyaudio_stream_callback(raw_audio_string, *_):
     levels = fill_frequency_bins(data_array)
     print(levels)
 
+    return(raw_audio_string, pyaudio.paContinue)
+
 def main():
     """The main function for the light show."""
     # Start PyAudio
