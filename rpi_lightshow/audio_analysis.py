@@ -46,7 +46,7 @@ def make_frequency_bin(frequencies, bin_width, low_freq, high_freq):
     num_bins = high_bin_idx - low_bin_idx + 1
 
     # Return the magnitude of the new bin
-    return sum(frequencies[low_bin_idx:high_bin_idx + 1] / num_bins)
+    return sum(frequencies[low_bin_idx:high_bin_idx + 1]) / num_bins
 
 def fill_frequency_bins(audio_data,
                         sample_rate=RATE,
