@@ -11,9 +11,10 @@ FORMAT = pyaudio.paInt16    # sampling size and format
 CHANNELS = 1                # number of audio channels
 RATE = 44100                # sampling rate in Hz
 
-# This is a list of frequency ranges of interest, based
-# mostly on intuition and testing, and also information online. Tweaking
-# these may lead to better results.
+# This is a list of frequency ranges of interest, based mostly on
+# intuition and testing, and also information online. Tweaking these may
+# lead to better results. There must be exactly 6 frequency bins (for
+# now), and their upper limit  must never exceed the sampling rate.
 FREQUENCY_BINS = ((60, 150),    # bass (consider going further than 150)
                   (250, 500),   # low midrange
                   (500, 2e3),   # midrange
