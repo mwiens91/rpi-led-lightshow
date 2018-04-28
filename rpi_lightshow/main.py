@@ -51,6 +51,11 @@ def main():
     # Now we're in normal running operation. Exit when user tells us to.
     input("\n" + "-" * 5 + " hit enter anytime to exit " + "-" * 5 + "\n")
 
+    # Clean up GPIO pins
+    for pwm in pwms:
+        pwm.stop()
+    GPIO.cleanup()
+
     # Turn off audio stream
     audio_stream.stop_stream()
     audio_stream.close()
