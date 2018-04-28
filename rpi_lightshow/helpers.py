@@ -41,3 +41,16 @@ def get_library_number_format(number_format, library):
     except KeyError:
         # Invalid format
         raise ValueError("'%s' is an invalid format!" % number_format)
+
+
+def static_vars(**kwargs):
+    """A decorator to hold static variables.
+
+    See https://stackoverflow.com/questions/279561/what-is-the-python-equivalent-of-static-variables-inside-a-function.
+    """
+    def decorate(func):
+        """Give attributes to `func`."""
+        for k in kwargs:
+            setattr(func, k, kwargs[k])
+        return func
+    return decorate

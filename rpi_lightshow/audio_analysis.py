@@ -2,9 +2,14 @@
 
 import audioop
 import numpy as np
-from rpi_lightshow.constants import FORMAT, RATE, FREQUENCY_BINS
+from rpi_lightshow.constants import (FRAMES_PER_BUFFER,
+                                     FORMAT,
+                                     RATE,
+                                     FREQUENCY_BINS)
+from rpi_lightshow.helpers import static_vars
 
 
+@static_vars(window=np.hanning(FRAMES_PER_BUFFER))
 def apply_window(data):
     """Applies a Hanning window to audio data.
 
@@ -17,7 +22,7 @@ def apply_window(data):
     Returns:
         The `data` array with a Hanning window applied.
     """
-    return data * np.hanning(len(data))
+    return data * apply_window.window
 
 def make_frequency_bin(frequencies, bin_width, low_freq, high_freq):
     """Combine frequency bins together into a new bin.
