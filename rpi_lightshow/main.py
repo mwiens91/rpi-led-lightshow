@@ -10,13 +10,28 @@ from rpi_lightshow.constants import (FRAMES_PER_BUFFER,
                                      RATE,
                                      GPIO_PINS)
 
+max_freqs = [1, 1, 1, 1, 1, 1]
+
+def limit_level(max_freq, level):
+    if level < max_freq:
+        return level/max_freq*100
+    else:
+        return 100
+
 def pyaudio_stream_callback(raw_audio_string, *_):
     """Callback function for PyAudio stream."""
+
     # Put the audio data into an array
     data_array = np.fromstring(raw_audio_string, np.int16)
 
     # Find the frequency levels
     levels = fill_frequency_bins(data_array)
+
+    # Find max frequency
+    global max_freqs
+    max_freqs = [(max(levels, max_freqs)) for max_freqs, levels in zip(max_freqs,levels)]
+
+    level = [(limit_level(levels,max_freqs)) for levels, max_freqs in zip(max_freqs,levels)]
     print(levels)
 
     return(raw_audio_string, pyaudio.paContinue)
