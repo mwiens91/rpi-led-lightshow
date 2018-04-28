@@ -8,52 +8,67 @@ from rpi_lightshow.constants import (FRAMES_PER_BUFFER,
                                      FORMAT,
                                      CHANNELS,
                                      RATE,
+                                     FREQUENCY_BINS,
                                      GPIO_PINS)
 from rpi_lightshow.helpers import get_library_number_format
 
-max_freqs = [1, 1, 1, 1, 1, 1]
 
-def limit_level(max_freq, level):
-    if level < max_freq:
-        return level/max_freq*100
-    else:
-        return 100
+def pyaudio_stream_callback_closure(pulse_width_modulators):
+    """Provides a closure for audio stream callback function.
 
-def pyaudio_stream_callback(raw_audio_string, *_):
-    """Callback function for PyAudio stream.
-
-    Takes in a string encoding audio for each buffer, and lights up LEDs
-    according to the audio buffer.
-
-    Arg:
-        raw_audio_string: A bytes string encoding an audio buffer using
-            the format specified in FORMAT.
-    Returns:
-        The exact raw_audio_string passed into the function, and a
-        signal to tell PyAudio to keep running.
+    Specifically, this returns a callback function aware of the passed
+    in PWMs, and also of the maximum frequencies seen so far.
     """
+    # The maximum frequency bin levels seen so far
+    max_freq_levels = [1 for i in range(len(FREQUENCY_BINS))]
 
-    # Put the audio data into an array
-    data_array = np.fromstring(raw_audio_string,
-                               get_library_number_format(FORMAT, 'numpy'))
+    # The callback function
+    def pyaudio_stream_callback(raw_audio_string, *_):
+        """Callback function for PyAudio stream.
 
-    # Find the frequency levels
-    levels = fill_frequency_bins(data_array)
+        Takes in a string encoding audio for each buffer, and lights up LEDs
+        according to the audio buffer.
 
-    # Find max frequency
-    global max_freqs
-    max_freqs = [(max(levels, max_freqs)) for max_freqs, levels in zip(max_freqs,levels)]
+        Arg:
+            raw_audio_string: A bytes string encoding an audio buffer using
+                the format specified in FORMAT.
+        Returns:
+            The exact raw_audio_string passed into the function, and a
+            signal to tell PyAudio to keep running.
+        """
+        nonlocal max_freq_levels
 
-    # Limit the level of the frequency
-    levels = [(limit_level(levels,max_freqs)) for levels, max_freqs in zip(max_freqs,levels)]
+        # Put the audio data into an array
+        data_array = np.fromstring(raw_audio_string,
+                                   get_library_number_format(FORMAT, 'numpy'))
 
-    # Pulse the corresponding LED with the corresponding frequency bin
-    for pwm, level in zip(pwms,levels):
-        pwm.ChangeDutyCycle(level)
+        # Fill the frequency bins
+        levels = fill_frequency_bins(data_array)
 
-    print(levels)
+        # Update maximum value for each frequency bin
+        for bin_idx, bin_pair in enumerate(zip(max_freq_levels, levels)):
+            # Check for new maximum
+            if bin_pair[1] > bin_pair[0]:
+                max_freq_levels[bin_idx] = bin_pair[1]
 
-    return(raw_audio_string, pyaudio.paContinue)
+        # Scale the frequency levels by their maximum to determine duty
+        # cycles
+        duty_cycles = [level / max_freq_level * 100
+                    for level, max_freq_level in zip(max_freq_levels, levels)]
+
+        # Pulse each corresponding LED with its frequency bin level
+        for pwm, duty_cycle in zip(pulse_width_modulators, duty_cycles):
+            pwm.ChangeDutyCycle(duty_cycle)
+
+        # NOTE: Print the duty cycles for testing purposes
+        print(duty_cycles)
+
+        # Tell PyAudio to keep going
+        return(raw_audio_string, pyaudio.paContinue)
+
+    # Return the callback function
+    return pyaudio_stream_callback
+
 
 def main():
     """The main function for the light show."""
@@ -76,15 +91,16 @@ def main():
         pwms.append(pwm)
 
     # Use the RPi's audio output
-    audio_stream = this_pyaudio.open(format=get_library_number_format(
-                                                FORMAT,
-                                                'portaudio'),
-                                     channels=CHANNELS,
-                                     rate=RATE,
-                                     frames_per_buffer=FRAMES_PER_BUFFER,
-                                     stream_callback=pyaudio_stream_callback,
-                                     input=True,
-                                     output=False)
+    audio_stream = this_pyaudio.open(
+                    format=get_library_number_format(
+                                FORMAT,
+                                'portaudio'),
+                    channels=CHANNELS,
+                    rate=RATE,
+                    frames_per_buffer=FRAMES_PER_BUFFER,
+                    stream_callback=pyaudio_stream_callback_closure(pwms),
+                    input=True,
+                    output=False)
 
     # Now we're in normal running operation. Exit when user tells us to.
     input("\n" + "-" * 5 + " hit enter anytime to exit " + "-" * 5 + "\n")
