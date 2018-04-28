@@ -1,8 +1,5 @@
 """Contains constants used in the program."""
 
-import pyaudio
-
-
 # Audio stream settings (see
 # https://people.csail.mit.edu/hubert/pyaudio/docs/ for more details on
 # any of these)
