@@ -3,7 +3,7 @@
 # Audio stream settings (see
 # https://people.csail.mit.edu/hubert/pyaudio/docs/ for more details on
 # any of these)
-FRAMES_PER_BUFFER = 1024    # number of audio frames per buffer
+FRAMES_PER_BUFFER = 2048    # number of audio frames per buffer
 
 # Choose between the following:
 # - int8
