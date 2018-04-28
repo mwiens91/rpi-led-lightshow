@@ -9,6 +9,7 @@ from rpi_lightshow.constants import (FRAMES_PER_BUFFER,
                                      CHANNELS,
                                      RATE,
                                      GPIO_PINS)
+from rpi_lightshow.helpers import get_library_number_format
 
 max_freqs = [1, 1, 1, 1, 1, 1]
 
@@ -22,7 +23,8 @@ def pyaudio_stream_callback(raw_audio_string, *_):
     """Callback function for PyAudio stream."""
 
     # Put the audio data into an array
-    data_array = np.fromstring(raw_audio_string, np.int16)
+    data_array = np.fromstring(raw_audio_string,
+                               get_library_number_format(FORMAT, 'numpy'))
 
     # Find the frequency levels
     levels = fill_frequency_bins(data_array)
@@ -63,7 +65,9 @@ def main():
         pwms.append(pwm)
 
     # Use the RPi's audio output
-    audio_stream = this_pyaudio.open(format=FORMAT,
+    audio_stream = this_pyaudio.open(format=get_library_number_format(
+                                                FORMAT,
+                                                'portaudio'),
                                      channels=CHANNELS,
                                      rate=RATE,
                                      frames_per_buffer=FRAMES_PER_BUFFER,

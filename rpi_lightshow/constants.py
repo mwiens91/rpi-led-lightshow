@@ -7,7 +7,14 @@ import pyaudio
 # https://people.csail.mit.edu/hubert/pyaudio/docs/ for more details on
 # any of these)
 FRAMES_PER_BUFFER = 1024    # number of audio frames per buffer
-FORMAT = pyaudio.paInt16    # sampling size and format
+
+# Choose between the following:
+# - int8
+# - int16
+# - int32
+# - float32
+# - uint8
+FORMAT = 'int16'    # sampling size and format
 
 # Do NOT change this. Dealing with 2 channels is non-trivial. See
 # https://stackoverflow.com/questions/22636499/convert-multi-channel-pyaudio-into-numpy-array
