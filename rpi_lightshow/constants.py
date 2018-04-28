@@ -3,11 +3,6 @@
 import pyaudio
 
 
-# Program info
-NAME = 'rpi-led-lightshow'
-VERSION = '0.0.1'
-DESCRIPTION = 'Perform a sexy light show with your Raspberry Pi and some LEDs!'
-
 # Audio stream settings (see
 # https://people.csail.mit.edu/hubert/pyaudio/docs/ for more details on
 # any of these)
