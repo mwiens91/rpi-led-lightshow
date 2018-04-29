@@ -28,7 +28,7 @@ RATE = 44100                # sampling rate in Hz
 
 # This is a list of frequency ranges of interest, based mostly on
 # intuition and testing, and also information online. Tweaking these may
-# lead to better results. There must be exactly 6 frequency bins (for
+# lead to better results. There must be exactly 5 frequency bins (for
 # now), and their upper limit must never exceed half of the sampling
 # rate (e.g., for sampling rate of 44.1KHz, the upper limits must be
 # less than 22KHz).
@@ -41,15 +41,14 @@ RATE = 44100                # sampling rate in Hz
 # of the frequency bins returned by the FFT depend inversely with the
 # number of frames per buffer, so the lower your frames per buffer the
 # less narrow your widths can be below.
-FREQUENCY_BINS = ((60, 150),    # bass (consider going further than 150)
-                  (250, 500),   # low midrange
-                  (500, 2e3),   # midrange
-                  (2e3, 4e3),   # upper midrange
-                  (4e3, 6e3),   # "presence"
-                  (6e3, 20e3),  # "brilliance"
+FREQUENCY_BINS = ((45, 85),     # dat beat
+                  (120, 160),   # dat snare
+                  (252, 500),   # dat low voice
+                  (400, 1.5e3),     # dat melody
+                  (2e3, 2.5e3),     # more of dat melody
                  )
 
 
 # Raspberry Pi GPIO pins to use. The order here matters, and for now
-# there must be exactly 6 pins. More on this later.
-GPIO_PINS = (12, 18, 22, 36, 38, 40)
+# there must be exactly 5 pins. More on this later.
+GPIO_PINS = (12, 18, 22, 36, 38)
