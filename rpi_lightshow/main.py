@@ -73,7 +73,7 @@ def pyaudio_stream_callback_closure(pulse_width_modulators):
             # Zero-pad the printing
             if dc >= 50:
                 # Display high values in bold red
-                print("\033[91m\033[1m%03d\033[0m" % 5, end=' ')
+                print("\033[91m\033[1m%03d\033[0m" % dc, end=' ')
             else:
                 print("%03d" % dc, end=' ')
         print()
