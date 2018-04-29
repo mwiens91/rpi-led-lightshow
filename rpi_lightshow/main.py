@@ -9,6 +9,7 @@ from rpi_lightshow.constants import (FRAMES_PER_BUFFER,
                                      CHANNELS,
                                      RATE,
                                      FREQUENCY_BINS,
+                                     LED_DUTY_CYCLE_THRESHOLDS,
                                      GPIO_PINS)
 from rpi_lightshow.helpers import get_library_number_format
 
@@ -55,6 +56,13 @@ def pyaudio_stream_callback_closure(pulse_width_modulators):
         # cycles
         duty_cycles = [level / max_freq_level * 100
                     for level, max_freq_level in zip(levels, max_freq_levels)]
+
+        # Kill any duty cycle that doesn't meet the required theshold
+        for dc_idx, dc_pair in enumerate(zip(duty_cycles,
+                                             LED_DUTY_CYCLE_THRESHOLDS)):
+            if dc_pair[0] < dc_pair[1]:
+                # Don't light the LED at all
+                duty_cycles[dc_idx] = 0
 
         # Pulse each corresponding LED with its frequency bin level
         for pwm, duty_cycle in zip(pulse_width_modulators, duty_cycles):
