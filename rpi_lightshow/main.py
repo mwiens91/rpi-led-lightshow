@@ -61,7 +61,10 @@ def pyaudio_stream_callback_closure(pulse_width_modulators):
             pwm.ChangeDutyCycle(duty_cycle)
 
         # NOTE: Print the duty cycles for testing purposes
-        print(duty_cycles)
+        for dc in duty_cycle:
+            # Zero-pad the printing
+            print("%03d" % dc, end=' ')
+        print()
 
         # Tell PyAudio to keep going
         return(raw_audio_string, pyaudio.paContinue)
