@@ -30,7 +30,7 @@ RATE = 44100                # sampling rate in Hz
 # intuition and testing, and also information online. Tweaking these may
 # lead to better results. There must be exactly 6 frequency bins (for
 # now), and their upper limit must never exceed half of the sampling
-# rate (e.g., for sampling rate of 44.1KHz, the upper limists must be
+# rate (e.g., for sampling rate of 44.1KHz, the upper limits must be
 # less than 22KHz).
 #
 # The frequency bins work as follows: it will recombine frequency bins
