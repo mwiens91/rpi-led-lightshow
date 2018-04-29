@@ -44,8 +44,8 @@ RATE = 44100                # sampling rate in Hz
 FREQUENCY_BINS = ((45, 85),     # dat beat
                   (120, 160),   # dat snare
                   (252, 500),   # dat low voice
-                  (400, 1.5e3),     # dat melody
-                  (2e3, 2.5e3),     # more of dat melody
+                  (400, 800),     # dat melody
+                  (600, 1.5e3),     # more of dat melody
                  )
 
 
