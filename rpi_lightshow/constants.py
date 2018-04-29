@@ -37,7 +37,10 @@ RATE = 44100                # sampling rate in Hz
 # returned by a Fast Fourier Transform (FFT) such that all of the bins
 # it combines are greater than the lowest frequency and lower than the
 # highest frequency. Thus, selecting too narrow a width can lead to not
-# combining any of the FFTs bins, causing the program to crash.
+# combining any of the FFTs bins, causing the program to crash. The size
+# of the frequency bins returned by the FFT depend inversely with the
+# number of frames per buffer, so the lower your frames per buffer the
+# less narrow your widths can be below.
 FREQUENCY_BINS = ((60, 150),    # bass (consider going further than 150)
                   (250, 500),   # low midrange
                   (500, 2e3),   # midrange
