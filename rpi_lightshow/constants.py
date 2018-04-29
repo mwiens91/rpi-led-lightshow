@@ -51,7 +51,7 @@ FREQUENCY_BINS = ((45, 85),     # dat beat
 
 # The thresholds for an LEDs PWM duty cycle below which the LED will not
 # light up
-LED_DUTY_CYCLE_THESHOLDS = [30, 4, 0, 0, 0]
+LED_DUTY_CYCLE_THRESHOLDS = [30, 4, 0, 0, 0]
 
 
 # Raspberry Pi GPIO pins to use. The order here matters, and for now
