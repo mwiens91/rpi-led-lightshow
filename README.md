@@ -63,10 +63,10 @@ production of the song, might pick up something else; the criteria we
 followed for this LED is that it supported the lowest frequency LED as
 well as possible.
 
-Most of the variation is meant to happen in the two lowest LEDs. The
-next three capture overlapping regions of the midrange. They are not
-meant to track any specific instrument or sound but more-so light up
-with the general midrange intensity of the song.
+Most of the variation is meant to happen in the two lowest frequency
+LEDs. The next three LEDs capture overlapping regions of the midrange.
+They are not meant to track any specific instrument or sound but more-so
+light up with the general midrange intensity of the song.
 
 ## How does it look?
 
