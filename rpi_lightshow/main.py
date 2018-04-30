@@ -12,14 +12,25 @@ from rpi_lightshow.constants import (FRAMES_PER_BUFFER,
                                      LED_DUTY_CYCLE_THRESHOLDS,
                                      GPIO_PINS)
 from rpi_lightshow.helpers import get_library_number_format
+from rpi_lightshow.runtime_settings import parse_runtime_args
 
 
-def pyaudio_stream_callback_closure(pulse_width_modulators):
+def pyaudio_stream_callback_closure(pulse_width_modulators,
+                                    show_duty_cycles):
     """Provides a closure for audio stream callback function.
 
     Specifically, this returns a callback function aware of the passed
     in PWMs, and also of the maximum frequencies seen so far. It also
     let's the callback function keep track of its previous duty cycle.
+
+    Args:
+        pulse_width_modulators: A list of RPi.GPIO.PWMs corresponding to
+            the connected LEDs.
+        show_duty_cycles: A boolean specifying whether to print the duty
+            cycles to the terminal.
+
+    Returns:
+        The callback function for PyAudio.
     """
     # The maximum frequency bin levels seen so far
     max_freq_levels = [1 for i in range(len(FREQUENCY_BINS))]
@@ -81,15 +92,16 @@ def pyaudio_stream_callback_closure(pulse_width_modulators):
         for pwm, duty_cycle in zip(pulse_width_modulators, avg_duty_cycles):
             pwm.ChangeDutyCycle(duty_cycle)
 
-        # NOTE: Print the duty cycles for testing purposes
-        for dc in avg_duty_cycles:
-            # Zero-pad the printing
-            if dc >= 50:
-                # Display high values in bold red
-                print("\033[91m\033[1m%03d\033[0m" % dc, end=' ')
-            else:
-                print("%03d" % dc, end=' ')
-        print()
+        # Print the duty cycles for testing purposes
+        if show_duty_cycles:
+            for dc in avg_duty_cycles:
+                # Zero-pad the printing
+                if dc >= 50:
+                    # Display high values in bold red
+                    print("\033[91m\033[1m%03d\033[0m" % dc, end=' ')
+                else:
+                    print("%03d" % dc, end=' ')
+            print()
 
         # Tell PyAudio to keep going
         return(raw_audio_string, pyaudio.paContinue)
@@ -100,6 +112,9 @@ def pyaudio_stream_callback_closure(pulse_width_modulators):
 
 def main():
     """The main function for the light show."""
+    # Get runtime arguments
+    runtimeargs = parse_runtime_args()
+
     # Start PyAudio
     this_pyaudio = pyaudio.PyAudio()
 
@@ -126,7 +141,9 @@ def main():
                     channels=CHANNELS,
                     rate=RATE,
                     frames_per_buffer=FRAMES_PER_BUFFER,
-                    stream_callback=pyaudio_stream_callback_closure(pwms),
+                    stream_callback=pyaudio_stream_callback_closure(
+                                pwms,
+                                runtimeargs.show_duty_cycles),
                     input=True,
                     output=False)
 
