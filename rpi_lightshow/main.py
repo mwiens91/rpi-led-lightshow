@@ -93,7 +93,7 @@ def pyaudio_stream_callback_closure(pulse_width_modulators,
 
         # Print the duty cycles for testing purposes
         if show_duty_cycles:
-            for dc in avg_duty_cycles:
+            for dc in duty_cycles:
                 # Zero-pad the printing
                 if dc >= 50:
                     # Display high values in bold red
