@@ -18,10 +18,15 @@ def pyaudio_stream_callback_closure(pulse_width_modulators):
     """Provides a closure for audio stream callback function.
 
     Specifically, this returns a callback function aware of the passed
-    in PWMs, and also of the maximum frequencies seen so far.
+    in PWMs, and also of the maximum frequencies seen so far. It also
+    let's the callback function keep track of its previous duty cycle.
     """
     # The maximum frequency bin levels seen so far
     max_freq_levels = [1 for i in range(len(FREQUENCY_BINS))]
+
+    # The previous duty cycles
+    last_duty_cycles = [0 for i in range(len(GPIO_PINS))]
+
 
     # The callback function
     def pyaudio_stream_callback(raw_audio_string, *_):
@@ -37,7 +42,7 @@ def pyaudio_stream_callback_closure(pulse_width_modulators):
             The exact raw_audio_string passed into the function, and a
             signal to tell PyAudio to keep running.
         """
-        nonlocal max_freq_levels
+        nonlocal last_duty_cycles, max_freq_levels
 
         # Put the audio data into an array
         data_array = np.fromstring(raw_audio_string,
@@ -64,12 +69,20 @@ def pyaudio_stream_callback_closure(pulse_width_modulators):
                 # Don't light the LED at all
                 duty_cycles[dc_idx] = 0
 
+        # Average the duty cycles we have so far with the previous duty
+        # cycles
+        avg_duty_cycles = [(prev + new) / 2
+                           for prev, new in zip(last_duty_cycles, duty_cycles)]
+
+        # Store the current duty cycles for next round
+        last_duty_cycles = duty_cycles
+
         # Pulse each corresponding LED with its frequency bin level
-        for pwm, duty_cycle in zip(pulse_width_modulators, duty_cycles):
+        for pwm, duty_cycle in zip(pulse_width_modulators, avg_duty_cycles):
             pwm.ChangeDutyCycle(duty_cycle)
 
         # NOTE: Print the duty cycles for testing purposes
-        for dc in duty_cycles:
+        for dc in avg_duty_cycles:
             # Zero-pad the printing
             if dc >= 50:
                 # Display high values in bold red
