@@ -9,8 +9,7 @@ from rpi_lightshow.constants import (FRAMES_PER_BUFFER,
                                      CHANNELS,
                                      RATE,
                                      FREQUENCY_BINS,
-                                     LED_DUTY_CYCLE_THRESHOLDS,
-                                     GPIO_PINS)
+                                     LED_DUTY_CYCLE_THRESHOLDS)
 from rpi_lightshow.helpers import get_library_number_format
 from rpi_lightshow.runtime_settings import parse_runtime_args
 
@@ -36,7 +35,7 @@ def pyaudio_stream_callback_closure(pulse_width_modulators,
     max_freq_levels = [1 for i in range(len(FREQUENCY_BINS))]
 
     # The previous duty cycles
-    last_duty_cycles = [0 for i in range(len(GPIO_PINS))]
+    last_duty_cycles = [0 for i in range(len(pulse_width_modulators))]
 
 
     # The callback function
@@ -122,7 +121,7 @@ def main():
     GPIO.setmode(GPIO.BOARD)    # refer to pin numbers on RPi board
     pwms = []
 
-    for pin_number in GPIO_PINS:
+    for pin_number in runtimeargs.pin_numbers:
         # Activate the pin
         GPIO.setup(pin_number, GPIO.OUT)
 
