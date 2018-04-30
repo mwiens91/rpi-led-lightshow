@@ -50,6 +50,11 @@ def make_frequency_bin(frequencies, bin_width, low_freq, high_freq):
     # Find the number of bins used
     num_bins = high_bin_idx - low_bin_idx + 1
 
+    # Explicitly raise an exception if we're not using any bins
+    if num_bins < 1:
+        raise ValueError('%fHz–%fHz is too narrow a frequency range!'
+                            % (low_freq, high_freq))
+
     # Return the magnitude of the new bin
     return sum(frequencies[low_bin_idx:high_bin_idx + 1]) / num_bins
 
