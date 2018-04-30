@@ -6,8 +6,9 @@ Perform a sexy light show with your Raspberry Pi and some LEDs!
 
 The setup for this program is *very* similar to that of
 [rpi-volume-led](https://github.com/mwiens91/rpi-volume-led). The readme
-for that project has all the instructions, and the program itself comes
-with tests which make it easy to troubleshoot if anything goes wrong.
+for that project has all the instructions you'll need, and the program
+itself comes with tests which make troubleshooting easy if anything goes
+wrong.
 
 ## How does it work?
 
