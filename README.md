@@ -19,7 +19,9 @@ thresholds, averaging).
 
 ## How does it look?
 
-Videos coming soon
+Click the Youtube thumbnail image below to find out!
+
+[![Youtube thumbnail](https://img.youtube.com/vi/0hyedCX0OAA/0.jpg)](http://www.youtube.com/watch?v=0hyedCX0OAA "Raspberry Pi Dynamic LED Lightshow")
 
 ## Who are you?
 
