@@ -8,7 +8,7 @@ You're going to need a Raspberry Pi (RPi) 3 Model B, a breadboard, 5
 through-hole LEDs, and 5 through-hole ~270Ω resistors. The program is
 unlikely to meet performance requirements on older RPis due to high
 processing needs; that said, it might still work on older models if you
-tweak some settings in [constants.py](rpi-lightshow/constants.py).
+tweak some settings in [constants.py](rpi_lightshow/constants.py).
 
 ### Setting up the LEDs
 
@@ -41,7 +41,7 @@ sudo ./start_rpi_led_lightshow.py -p 1 2 3 4 5
 where 1, 2, 3, 4, and 5 are example GPIO pin numbers.
 
 If you're changing settings in
-[constants.py](rpi-lightshow/constants.py) and want another
+[constants.py](rpi_lightshow/constants.py) and want another
 visualization of what's happening in the program, you can print the
 un-averaged duty cycles to the terminal using
 
