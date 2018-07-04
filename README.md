@@ -7,7 +7,7 @@ Perform a sexy light show with your Raspberry Pi and some LEDs!
 You're going to need a Raspberry Pi (RPi) 3 Model B, a breadboard, 5
 through-hole LEDs, and 5 through-hole ~270Ω resistors. The program is
 unlikely to meet performance requirements on older RPis due to high
-processing needs; that said, it might still work on older models if you
+processing needs; although, it may still work on older models if you
 tweak some settings in [constants.py](rpi_lightshow/constants.py).
 
 ### Setting up the LEDs
