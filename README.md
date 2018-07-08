@@ -15,7 +15,7 @@ tweak some settings in [constants.py](rpi_lightshow/constants.py).
 The hardware setup for this program is *very* similar to that of
 [rpi-volume-led](https://github.com/mwiens91/rpi-volume-led). The readme
 for that project has all the instructions you'll need to set up one
-LED to your RPi, and the program itself comes with tests which make
+LED to your RPi. The program also comes with tests which make
 troubleshooting easy if anything goes wrong.
 
 Once you're comfortable setting up one LED, set up five for this
@@ -65,12 +65,12 @@ well as possible.
 
 Most of the variation is meant to happen in the two lowest frequency
 LEDs. The next three LEDs capture overlapping regions of the midrange.
-They are not meant to track any specific instrument or sound but more-so
+They are not meant to track any specific instrument or sound but moreso
 light up with the general midrange intensity of the song.
 
 ## How does it look?
 
-Click the Youtube thumbnail below to find out!
+Click the YouTube thumbnail below to find out!
 
 [![Youtube thumbnail](https://img.youtube.com/vi/0hyedCX0OAA/0.jpg)](http://www.youtube.com/watch?v=0hyedCX0OAA "Raspberry Pi Dynamic LED Lightshow")
 
