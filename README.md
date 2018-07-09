@@ -15,7 +15,7 @@ tweak some settings in [constants.py](rpi_lightshow/constants.py).
 The hardware setup for this program is *very* similar to that of
 [rpi-volume-led](https://github.com/mwiens91/rpi-volume-led). The readme
 for that project has all the instructions you'll need to set up one
-LED to your RPi. The program also comes with tests which make
+LED to your RPi. rpi-volume-led also comes with tests which make
 troubleshooting easy if anything goes wrong.
 
 Once you're comfortable setting up one LED, set up five for this
