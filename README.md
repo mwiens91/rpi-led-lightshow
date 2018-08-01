@@ -1,3 +1,5 @@
+![Python version](https://img.shields.io/badge/python-3-blue.svg)
+
 # rpi-led-lightshow
 
 Perform a sexy light show with your Raspberry Pi and some LEDs!
