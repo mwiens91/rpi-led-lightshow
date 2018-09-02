@@ -1,4 +1,4 @@
-![Python version](https://img.shields.io/badge/python-3-blue.svg)
+[![Python version](https://img.shields.io/badge/python-3.5%20|%203.6%20|%203.7-blue.svg)](https://github.com/mwiens91/rpi-led-lightshow)
 
 # rpi-led-lightshow
 
