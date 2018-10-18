@@ -4,18 +4,19 @@ import numpy as np
 import pyaudio
 import RPi.GPIO as GPIO
 from rpi_lightshow.audio_analysis import fill_frequency_bins
-from rpi_lightshow.constants import (FRAMES_PER_BUFFER,
-                                     FORMAT,
-                                     CHANNELS,
-                                     RATE,
-                                     FREQUENCY_BINS,
-                                     LED_DUTY_CYCLE_THRESHOLDS)
+from rpi_lightshow.constants import (
+    FRAMES_PER_BUFFER,
+    FORMAT,
+    CHANNELS,
+    RATE,
+    FREQUENCY_BINS,
+    LED_DUTY_CYCLE_THRESHOLDS,
+)
 from rpi_lightshow.helpers import get_library_number_format
 from rpi_lightshow.runtime_settings import parse_runtime_args
 
 
-def pyaudio_stream_callback_closure(pulse_width_modulators,
-                                    show_duty_cycles):
+def pyaudio_stream_callback_closure(pulse_width_modulators, show_duty_cycles):
     """Provides a closure for audio stream callback function.
 
     Specifically, this returns a callback function aware of the passed
@@ -37,7 +38,6 @@ def pyaudio_stream_callback_closure(pulse_width_modulators,
     # The previous duty cycles
     last_duty_cycles = [0 for i in range(len(pulse_width_modulators))]
 
-
     # The callback function
     def pyaudio_stream_callback(raw_audio_string, *_):
         """Callback function for PyAudio stream.
@@ -55,8 +55,9 @@ def pyaudio_stream_callback_closure(pulse_width_modulators,
         nonlocal last_duty_cycles, max_freq_levels
 
         # Put the audio data into an array
-        data_array = np.fromstring(raw_audio_string,
-                                   get_library_number_format(FORMAT, 'numpy'))
+        data_array = np.fromstring(
+            raw_audio_string, get_library_number_format(FORMAT, "numpy")
+        )
 
         # Fill the frequency bins
         levels = fill_frequency_bins(data_array)
@@ -69,20 +70,25 @@ def pyaudio_stream_callback_closure(pulse_width_modulators,
 
         # Scale the frequency levels by their maximum to determine duty
         # cycles
-        duty_cycles = [level / max_freq_level * 100
-                    for level, max_freq_level in zip(levels, max_freq_levels)]
+        duty_cycles = [
+            level / max_freq_level * 100
+            for level, max_freq_level in zip(levels, max_freq_levels)
+        ]
 
         # Kill any duty cycle that doesn't meet the required theshold
-        for dc_idx, dc_pair in enumerate(zip(duty_cycles,
-                                             LED_DUTY_CYCLE_THRESHOLDS)):
+        for dc_idx, dc_pair in enumerate(
+            zip(duty_cycles, LED_DUTY_CYCLE_THRESHOLDS)
+        ):
             if dc_pair[0] < dc_pair[1]:
                 # Don't light the LED at all
                 duty_cycles[dc_idx] = 0
 
         # Average the duty cycles we have so far with the previous duty
         # cycles
-        avg_duty_cycles = [(prev + new) / 2
-                           for prev, new in zip(last_duty_cycles, duty_cycles)]
+        avg_duty_cycles = [
+            (prev + new) / 2
+            for prev, new in zip(last_duty_cycles, duty_cycles)
+        ]
 
         # Store the current duty cycles for next round
         last_duty_cycles = duty_cycles
@@ -97,13 +103,13 @@ def pyaudio_stream_callback_closure(pulse_width_modulators,
                 # Zero-pad the printing
                 if dc >= 50:
                     # Display high values in bold red
-                    print("\033[91m\033[1m%03d\033[0m" % dc, end=' ')
+                    print("\033[91m\033[1m%03d\033[0m" % dc, end=" ")
                 else:
-                    print("%03d" % dc, end=' ')
+                    print("%03d" % dc, end=" ")
             print()
 
         # Tell PyAudio to keep going
-        return(raw_audio_string, pyaudio.paContinue)
+        return (raw_audio_string, pyaudio.paContinue)
 
     # Return the callback function
     return pyaudio_stream_callback
@@ -118,7 +124,7 @@ def main():
     this_pyaudio = pyaudio.PyAudio()
 
     # Set up the GPIO pins
-    GPIO.setmode(GPIO.BOARD)    # refer to pin numbers on RPi board
+    GPIO.setmode(GPIO.BOARD)  # refer to pin numbers on RPi board
     pwms = []
 
     for pin_number in runtimeargs.pin_numbers:
@@ -126,7 +132,7 @@ def main():
         GPIO.setup(pin_number, GPIO.OUT)
 
         # Start Pulse Width Modulation
-        pwm = GPIO.PWM(pin_number, 100)   # 2nd arg is frequency
+        pwm = GPIO.PWM(pin_number, 100)  # 2nd arg is frequency
         pwm.start(0)
 
         # Add to list of PWMs
@@ -134,17 +140,16 @@ def main():
 
     # Use the RPi's audio output
     audio_stream = this_pyaudio.open(
-                    format=get_library_number_format(
-                                FORMAT,
-                                'portaudio'),
-                    channels=CHANNELS,
-                    rate=RATE,
-                    frames_per_buffer=FRAMES_PER_BUFFER,
-                    stream_callback=pyaudio_stream_callback_closure(
-                                pwms,
-                                runtimeargs.show_duty_cycles),
-                    input=True,
-                    output=False)
+        format=get_library_number_format(FORMAT, "portaudio"),
+        channels=CHANNELS,
+        rate=RATE,
+        frames_per_buffer=FRAMES_PER_BUFFER,
+        stream_callback=pyaudio_stream_callback_closure(
+            pwms, runtimeargs.show_duty_cycles
+        ),
+        input=True,
+        output=False,
+    )
 
     # Now we're in normal running operation. Exit when user tells us to.
     input("\n" + "-" * 5 + " hit enter anytime to exit " + "-" * 5 + "\n")

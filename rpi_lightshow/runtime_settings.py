@@ -14,23 +14,26 @@ def parse_runtime_args():
         details.
     """
     parser = argparse.ArgumentParser(
-            prog=NAME,
-            description="%(prog)s - " + DESCRIPTION,)
+        prog=NAME, description="%(prog)s - " + DESCRIPTION
+    )
     parser.add_argument(
-            "-p", "--pin-numbers",
-            help=("which 5 (exactly) GPIO pins to use."
-                  " Defaults to 12, 18, 22, 36, 38."),
-            type=int,
-            nargs=5,
-            default=GPIO_PINS,
-            )
+        "-p",
+        "--pin-numbers",
+        help=(
+            "which 5 (exactly) GPIO pins to use."
+            " Defaults to 12, 18, 22, 36, 38."
+        ),
+        type=int,
+        nargs=5,
+        default=GPIO_PINS,
+    )
     parser.add_argument(
-            "--show-duty-cycles",
-            help="print the duty cycles to the terminal",
-            action="store_true")
+        "--show-duty-cycles",
+        help="print the duty cycles to the terminal",
+        action="store_true",
+    )
     parser.add_argument(
-            "--version",
-            action="version",
-            version="%(prog)s " + VERSION)
+        "--version", action="version", version="%(prog)s " + VERSION
+    )
 
     return parser.parse_args()

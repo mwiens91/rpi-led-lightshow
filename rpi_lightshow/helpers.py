@@ -17,27 +17,34 @@ def get_library_number_format(number_format, library):
             'portaudio' or 'numpy'.
     """
     # Build format dictionaries for each library
-    numpy_format_dict = {'int8': np.int8,
-                         'int16': np.int16,
-                         'int32': np.int32,
-                         'float32': np.float32,
-                         'uint8': np.uint8,}
-    portaudio_format_dict = {'int8': pyaudio.paInt8,
-                             'int16': pyaudio.paInt16,
-                             'int32': pyaudio.paInt32,
-                             'float32': pyaudio.paFloat32,
-                             'uint8': pyaudio.paUInt8,}
+    numpy_format_dict = {
+        "int8": np.int8,
+        "int16": np.int16,
+        "int32": np.int32,
+        "float32": np.float32,
+        "uint8": np.uint8,
+    }
+    portaudio_format_dict = {
+        "int8": pyaudio.paInt8,
+        "int16": pyaudio.paInt16,
+        "int32": pyaudio.paInt32,
+        "float32": pyaudio.paFloat32,
+        "uint8": pyaudio.paUInt8,
+    }
 
     # Return the format type for the specified library
     try:
-        if library == 'numpy':
+        if library == "numpy":
             return numpy_format_dict[number_format]
-        elif library == 'portaudio':
+        elif library == "portaudio":
             return portaudio_format_dict[number_format]
         else:
-            raise ValueError(("'%s' is an invalid library!"
-                              " Library must be 'numpy' or 'portaudio'."
-                              % library))
+            raise ValueError(
+                (
+                    "'%s' is an invalid library!"
+                    " Library must be 'numpy' or 'portaudio'." % library
+                )
+            )
     except KeyError:
         # Invalid format
         raise ValueError("'%s' is an invalid format!" % number_format)
@@ -48,9 +55,11 @@ def static_vars(**kwargs):
 
     See https://stackoverflow.com/questions/279561/what-is-the-python-equivalent-of-static-variables-inside-a-function.
     """
+
     def decorate(func):
         """Give attributes to `func`."""
         for k in kwargs:
             setattr(func, k, kwargs[k])
         return func
+
     return decorate

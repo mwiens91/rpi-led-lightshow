@@ -2,10 +2,12 @@
 
 import audioop
 import numpy as np
-from rpi_lightshow.constants import (FRAMES_PER_BUFFER,
-                                     FORMAT,
-                                     RATE,
-                                     FREQUENCY_BINS)
+from rpi_lightshow.constants import (
+    FRAMES_PER_BUFFER,
+    FORMAT,
+    RATE,
+    FREQUENCY_BINS,
+)
 from rpi_lightshow.helpers import static_vars
 
 
@@ -23,6 +25,7 @@ def apply_window(data):
         The `data` array with a Hanning window applied.
     """
     return data * apply_window.window
+
 
 def make_frequency_bin(frequencies, bin_width, low_freq, high_freq):
     """Combine frequency bins together into a new bin.
@@ -52,15 +55,18 @@ def make_frequency_bin(frequencies, bin_width, low_freq, high_freq):
 
     # Explicitly raise an exception if we're not using any bins
     if num_bins < 1:
-        raise ValueError('%fHz–%fHz is too narrow a frequency range!'
-                            % (low_freq, high_freq))
+        raise ValueError(
+            "%fHz–%fHz is too narrow a frequency range!"
+            % (low_freq, high_freq)
+        )
 
     # Return the magnitude of the new bin
-    return sum(frequencies[low_bin_idx:high_bin_idx + 1]) / num_bins
+    return sum(frequencies[low_bin_idx : high_bin_idx + 1]) / num_bins
 
-def fill_frequency_bins(audio_data,
-                        sample_rate=RATE,
-                        target_frequency_bins=FREQUENCY_BINS):
+
+def fill_frequency_bins(
+    audio_data, sample_rate=RATE, target_frequency_bins=FREQUENCY_BINS
+):
     """Returns magnitudes of target frequency ranges from an audio sample.
 
     Args:
@@ -85,13 +91,18 @@ def fill_frequency_bins(audio_data,
     fft_frequencies = np.abs(np.fft.rfft(windowed_data))
 
     # Build the target bins
-    target_frequency_bins = [make_frequency_bin(fft_frequencies,
-                                                fft_width,
-                                                target_frequency_bins[i][0],
-                                                target_frequency_bins[i][1],)
-                                for i in range(len(target_frequency_bins))]
+    target_frequency_bins = [
+        make_frequency_bin(
+            fft_frequencies,
+            fft_width,
+            target_frequency_bins[i][0],
+            target_frequency_bins[i][1],
+        )
+        for i in range(len(target_frequency_bins))
+    ]
 
     return target_frequency_bins
+
 
 def find_volume(audio_bytes_string, format_=FORMAT):
     """Returns the RMS of an audio sample.
@@ -104,11 +115,11 @@ def find_volume(audio_bytes_string, format_=FORMAT):
         A number corresponding to the RMS of the audio string.
     """
     # Find how many bytes are being used to encode each sample of audio
-    if format_ == 'int8':
+    if format_ == "int8":
         width = 1
-    elif format_ == 'int16':
+    elif format_ == "int16":
         width = 2
-    elif format_ == 'int32':
+    elif format_ == "int32":
         width = 4
     else:
         raise ValueError("'%s' is an invalid format here!" % format_)

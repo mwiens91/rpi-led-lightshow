@@ -6,7 +6,7 @@
 # of performance, as increasing/decreasing this value by a factor of two
 # will half/double the number of times a Fast Fourier Transform is
 # computed (expensive!).
-FRAMES_PER_BUFFER = 2048    # number of audio frames per buffer
+FRAMES_PER_BUFFER = 2048  # number of audio frames per buffer
 
 # Choose between the following:
 # - int8
@@ -14,17 +14,17 @@ FRAMES_PER_BUFFER = 2048    # number of audio frames per buffer
 # - int32
 # - float32
 # - uint8
-FORMAT = 'int16'    # sampling size and format
+FORMAT = "int16"  # sampling size and format
 
 # Do NOT change this. Dealing with 2 channels is non-trivial. See
 # https://stackoverflow.com/questions/22636499/convert-multi-channel-pyaudio-into-numpy-array
 # to understand why.
-CHANNELS = 1                # number of audio channels
+CHANNELS = 1  # number of audio channels
 
 # You should be able to change this to whatever you want, but this
 # hasn't been tested at all. I don't see why you'd want to change this
 # though (hence, why other values haven't been tested).
-RATE = 44100                # sampling rate in Hz
+RATE = 44100  # sampling rate in Hz
 
 
 # This is a list of frequency ranges of interest. There must be exactly
@@ -41,12 +41,13 @@ RATE = 44100                # sampling rate in Hz
 # crash. The size of the frequency bins computed by the FFT depend
 # inversely with the number of audio frames per buffer, so the lower
 # your frames per buffer the wider your widths must be.
-FREQUENCY_BINS = ((45, 85),     # dat beat
-                  (120, 160),   # dat snare
-                  (252, 500),   # dat low voice
-                  (400, 800),     # dat melody
-                  (600, 1.5e3),     # more of dat melody
-                 )
+FREQUENCY_BINS = (
+    (45, 85),  # dat beat
+    (120, 160),  # dat snare
+    (252, 500),  # dat low voice
+    (400, 800),  # dat melody
+    (600, 1.5e3),  # more of dat melody
+)
 
 
 # The thresholds for an LEDs PWM duty cycle below which the LED will not
